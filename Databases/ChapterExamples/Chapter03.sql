@@ -187,7 +187,7 @@ INSERT INTO Student
 	(StdNo, StdFirstName, StdLastName, StdCity,
      StdState,  StdZip, StdMajor, StdClass, stdGPA)
 	VALUES ('234-56-7890','CANDY','KENDALL','TACOMA','WA','99042-3321', 'ACCT','JR',3.50);
-  
+
 CREATE TABLE Enrollment (
 OfferNo		INTEGER,
 StdNo		CHAR(11),
@@ -195,3 +195,112 @@ EnrGrade	DECIMAL(3,2),
 CONSTRAINT PKEnrollment PRIMARY KEY (OfferNo, StdNo),
 CONSTRAINT FKOffering FOREIGN KEY (OfferNo) REFERENCES Offering,
 CONSTRAINT FKStudent FOREIGN KEY (StdNo) REFERENCES Student);
+
+--p58
+INSERT INTO Offering
+	(OfferNo, CourseNo, OffTerm, OffYear, OffLocation, OffTime, FacNo, OffDays)
+	VALUES (1234,'IS320','FALL',2019,'BLM302','10:30:00','098-76-5432','MW');
+
+INSERT INTO Offering
+	(OfferNo, CourseNo, OffTerm, OffYear, OffLocation, OffTime, FacNo, OffDays)
+	VALUES (4321,'IS320','FALL',2019,'BLM214','15:30:00','098-76-5432','TTH');
+   
+
+INSERT INTO Enrollment
+	(OfferNO, StdNo, EnrGrade)
+	VALUES(1234,'123-45-6789',3.30);
+
+INSERT INTO Enrollment
+	(OfferNO, StdNo, EnrGrade)
+	VALUES(1234,'234-56-7890',3.50);
+
+INSERT INTO Enrollment
+	(OfferNO, StdNo, EnrGrade)
+	VALUES(4321,'124-56-7890',3.20);
+
+--p58
+select facno from faculty;
+select stdno from student;
+Select distinct facno, stdno from Faculty, Student;
+---
+--p61
+
+INSERT INTO Enrollment
+	(OfferNO, StdNo, EnrGrade)
+	VALUES(1234,'123-45-6789',3.30);
+
+INSERT INTO Enrollment
+	(OfferNO, StdNo, EnrGrade)
+	VALUES(1234,'234-56-7890',3.50);
+
+INSERT INTO Enrollment
+	(OfferNO, StdNo, EnrGrade)
+	VALUES(4321,'124-56-7890',3.20);
+
+select * from student, Enrollment;
+-- p61
+select * from student, enrollment 
+where student.stdno = enrollment.stdno;
+
+--p62
+select * from student full outer join faculty on faculty.facno = student.stdno;
+
+--p62
+select * from offering right join faculty on  offering.facno = faculty.facno;
+
+--p63
+CREATE TABLE Student2
+( StdNo 	    CHAR(11)    CONSTRAINT StdNoRequired NOT NULL,
+  StdFirstName  VARCHAR(50) CONSTRAINT StdFirstNameRequired NOT NULL,
+  StdLastName   VARCHAR(50) CONSTRAINT StdLastNameRequired NOT NULL,
+  StdCity	    VARCHAR(50) CONSTRAINT StdCityRequired NOT NULL,
+  StdState	    CHAR(2)	    CONSTRAINT StdStateRequired NOT NULL,
+  StdZip	    CHAR(10)    CONSTRAINT StdZipRequired NOT NULL,
+  StdMajor	    CHAR(6),
+  StdClass	    CHAR(6),
+  StdGPA	    DECIMAL(3,2) DEFAULT 0,	
+  CONSTRAINT PKStudent2 PRIMARY KEY (StdNo),	
+  CONSTRAINT ValidGPA2 CHECK ( StdGPA BETWEEN 0 AND 4 ),
+  CONSTRAINT ValidStdClass2 CHECK (StdClass IN ('FR','SO', 'JR','SR')),
+  CONSTRAINT MajorDeclared2 CHECK 
+               ( StdClass IN ('FR','SO') OR StdMajor IS NOT NULL ) );
+
+
+INSERT INTO Student2
+	(StdNo, StdFirstName, StdLastName, StdCity,
+	 StdState,  StdZip, StdMajor, StdClass, stdGPA)
+	VALUES ('123-45-6789','HOMER','WELLS','SEATTLE','WA','98121-1111', 'IS','FR',3.00);
+INSERT INTO Student2
+	(StdNo, StdFirstName, StdLastName, StdCity,
+	 StdState, StdMajor, StdClass, StdGPA, StdZip)
+	VALUES ('345-67-8901','WALLY','KENDALL','SEATTLE','WA','IS','SR',2.80,'98123-1141');
+
+INSERT INTO Student
+	(StdNo, StdFirstName, StdLastName, StdCity,
+	 StdState, StdMajor, StdClass, StdGPA, StdZip)
+	VALUES ('456-78-9012','JOE','ESTRADA','SEATTLE','WA','FIN','SR',3.20,'98121-2333');
+
+--p64
+select * from student;
+select * from student2;
+Select * from student intersect select * from student2;
+Select * from student except select * from student2;
+Select * from student2 except select * from student;
+
+--p65
+select * from enrollment;
+select enrollment.stdno, count(stdno), avg(enrgrade) from enrollment group by stdno;
+--p66
+select * from enrollment order by offerno, stdno;
+select * from student order by stdno;
+
+INSERT INTO Enrollment
+	(OfferNO, StdNo, EnrGrade)
+	VALUES(1234,'124-56-7890',3.32);
+
+INSERT INTO Enrollment
+	(OfferNO, StdNo, EnrGrade)
+	VALUES(1234,'456-78-9012',3.22);
+
+select offerNo from enrollment where stdno = all (select stdno from student);
+select stdno from student where stdno = all (select stdno from enrollment);
