@@ -1,3 +1,4 @@
+--p45
 drop table student;
 create table Student
   (stdNo char(11),
@@ -25,7 +26,7 @@ INSERT INTO Student
 	(StdNo, StdFirstName, StdLastName, StdCity,
      StdState,  StdZip, StdMajor, StdClass, stdGPA)
 	VALUES ('234-56-7890','CANDY','KENDALL','TACOMA','WA','99042-3321', 'ACCT','JR',3.50);
-
+--p48
 drop table student;
 create table Student
   (stdNo char(11),
@@ -304,3 +305,14 @@ INSERT INTO Enrollment
 
 select offerNo from enrollment where stdno = all (select stdno from student);
 select stdno from student where stdno = all (select stdno from enrollment);
+===
+SELECT table_name
+FROM information_schema.tables
+WHERE table_schema = 'public' -- Replace 'public' with the desired schema name
+  AND table_type = 'BASE TABLE';
+drop table student2;
+drop table enrollment;
+drop table offering;
+drop table faculty;
+drop table student;
+drop table course;
