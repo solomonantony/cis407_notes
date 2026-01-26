@@ -190,12 +190,13 @@ SELECT StdMajor, AVG(StdGPA) AS AvgGpa
  HAVING AVG(StdGPA) > 3.1;
 
 -- 4.24  Grouping all rows 
--- List the 
+-- List the number of upper division students and their average GPA
 SELECT COUNT(*) AS StdCnt, AVG(StdGPA) AS AvgGPA 
  FROM Student 
  WHERE StdClass IN ('JR','SR');
 
 -- 4.25  Grouping on two columns 
+-- Summarize the minimum and maximum of GPA by major and class
 
 SELECT StdMajor, StdClass, MIN(StdGPA) AS MinGPA, 
        MAX(StdGPA) AS MaxGPA, COUNT(*) AS CountRows
@@ -203,7 +204,8 @@ SELECT StdMajor, StdClass, MIN(StdGPA) AS MinGPA,
  GROUP BY StdMajor, StdClass;
 
 -- 4.26  Combining grouping and joins 
-
+-- Summarize the number of IS courses offerings 
+-- by course descriptio
 SELECT CrsDesc, COUNT(*) AS OfferCount 
  FROM Course, Offering  
  WHERE Course.CourseNo = Offering.CourseNo 
@@ -211,7 +213,8 @@ SELECT CrsDesc, COUNT(*) AS OfferCount
  GROUP BY CrsDesc;
 
 -- 4.27  Sorting on a single column 
-
+-- List GPA, name, city, state of juniors.  Order the 
+-- result by GPA in ascending order.
 SELECT StdGPA, StdFirstName, StdLastName, StdCity,
        StdState 
  FROM Student 
@@ -219,19 +222,20 @@ SELECT StdGPA, StdFirstName, StdLastName, StdCity,
  ORDER BY StdGPA;
 
 -- 4.28  Sorting on two columns with descending order 
-
+-- List the faculty data in ascending order of rank and
+-- descending order of salary
 SELECT FacRank, FacSalary, FacFirstName, FacLastName,
        FacDept 
  FROM Faculty 
  ORDER BY FacRank, FacSalary DESC;
 
 -- 4.29  Result with duplicates 
-
+-- List the city and state of faculty
 SELECT FacCity, FacState 
   FROM Faculty;
 
 -- 4.30  Eliminating duplicates with DISTINCT 
-
+-- List the unique city and state of faculty
 SELECT DISTINCT FacCity, FacState 
  FROM Faculty;
 
@@ -290,6 +294,8 @@ SELECT DISTINCT StdFirstName, StdLastName
    AND Student.StdNo = Enrollment.StdNo;
 
 -- 4.35  Joining three tables with columns from only two tables 
+-- List student named, offering number in Fall 2019, and grade 
+-- greater than 3.7 
 
 SELECT StdFirstName, StdLastName, Enrollment.OfferNo 
  FROM Student, Enrollment, Offering 
@@ -299,7 +305,9 @@ SELECT StdFirstName, StdLastName, Enrollment.OfferNo
    AND EnrGrade >= 3.7;
 
 -- 4.36  Joining three tables with columns from only two tables 
-
+-- List Leonard Vince's teaching schedule in fall 2019.  List the
+-- offering number, course number, number of units, 
+-- days, location and time
 SELECT OfferNo, Offering.CourseNo, CrsUnits, OffDays,
        OffLocation, OffTime
  FROM Faculty, Course, Offering 
@@ -310,7 +318,8 @@ SELECT OfferNo, Offering.CourseNo, CrsUnits, OffDays,
    AND FacLastName = 'VINCE';
 
 -- 4.37  Joining four tables 
-
+-- List student Bob Norbert's course schedule for spring 2020. Include
+-- course details and faculty name
 SELECT Offering.OfferNo, Offering.CourseNo, OffDays,
        OffLocation, OffTime, FacFirstName, FacLastName
  FROM Faculty, Offering, Enrollment, Student 
@@ -322,7 +331,8 @@ SELECT Offering.OfferNo, Offering.CourseNo, OffDays,
    AND StdLastName = 'NORBERT';
 
 -- 4.38  Joining five tables 
-
+-- List student Bob Norbert's course schedule for spring 2020. Include
+-- course credit hours and faculty name
 SELECT Offering.OfferNo, Offering.CourseNo, OffDays,
        OffLocation, OffTime, CrsUnits, FacFirstName,
        FacLastName
@@ -336,6 +346,8 @@ SELECT Offering.OfferNo, Offering.CourseNo, OffDays,
    AND StdLastName = 'NORBERT';
 
 -- 4.39  Join two tables using the join operator style 
+-- List name, city, and grade of students whith high 
+-- grade (>3.5) in a course offering
 
 SELECT StdFirstName, StdLastName, StdCity, EnrGrade
  FROM Student INNER JOIN Enrollment 
@@ -343,7 +355,8 @@ SELECT StdFirstName, StdLastName, StdCity, EnrGrade
  WHERE EnrGrade >= 3.5;
 
 -- 4.40  Join three tables using the join operator style 
-
+-- List name, city, and grade of students whith high 
+-- grade (>3.5) in a course offering in fall 2019
 SELECT StdFirstName, StdLastName, StdCity, EnrGrade
  FROM  Student INNER JOIN Enrollment 
      ON Student.StdNo = Enrollment.StdNo 
@@ -353,7 +366,9 @@ SELECT StdFirstName, StdLastName, StdCity, EnrGrade
    AND OffYear = 2019;
 
 -- 4.41  Join four tables using the join operator style 
-
+-- -- List name, city, and grade of students whith high 
+-- grade (>3.5) in a course offering in fall 2019
+-- taught by Leonard Vince
 SELECT StdFirstName, StdLastName, StdCity, EnrGrade
  FROM Student INNER JOIN Enrollment 
        ON Student.StdNo = Enrollment.StdNo 
@@ -365,8 +380,13 @@ SELECT StdFirstName, StdLastName, StdCity, EnrGrade
    AND FacLastName = 'VINCE';
 
 -- 4.42  Join five tables using the join operator style 
+-- List name, city, course credit hours, description, 
+-- and grade of students whith high 
+-- grade (>3.5) in a course offering in fall 2019
+-- taught by Leonard Vince
 
-SELECT StdFirstName, StdLastName, StdCity, EnrGrade, CrsUnits
+
+SELECT StdFirstName, StdLastName, StdCity, EnrGrade, CrsUnits. CrsDesc
  FROM Student INNER JOIN Enrollment 
        ON Student.StdNo = Enrollment.StdNo 
   INNER JOIN Offering 
@@ -378,21 +398,24 @@ SELECT StdFirstName, StdLastName, StdCity, EnrGrade, CrsUnits
    AND FacLastName = 'VINCE';
 
 -- 4.43  Joining two tables without matching on a primary and foreign key 
-
+-- List students who are also a faculty. 
 SELECT Student.* 
  FROM Student, Faculty 
  WHERE StdNo = FacNo;
 
 -- 4.44  Self-join 
-
-SELECT Subr.FacNo, Subr.FacLastName, Subr.FacSalary, 
-       Supr.FacNo, Supr.FacLastName, Supr.FacSalary
- FROM Faculty Subr, Faculty Supr
- WHERE Subr.FacSupervisor = Supr.FacNo 
-   AND Subr.FacSalary > Supr.FacSalary;
+-- List subordinates of faculty who have a higher salry
+-- than their supervisor
+SELECT Sub.FacNo as sub_facno, Sub.FacLastName as sub_lastname, Sub.FacSalary as sub_salary, 
+       Super.FacNo as super_facno, Super.FacLastName as super_lastname, Super.FacSalary as super_salary
+ FROM Faculty Sub, Faculty Super
+ WHERE Sub.FacSupervisor = Super.FacNo 
+   AND Sub.FacSalary > Super.FacSalary;
 
 -- 4.45  Simple join cycle using table alias names 
-
+-- Name the subordinate faculty members, and course number 
+-- in which the subordinate faculty member teaches the same
+-- course as the supervisor in 2020
 SELECT FacFirstName AS SubFacFirstName, 
        FacLastName AS SubFacLastName, O1.CourseNo
 FROM Faculty, Offering O1, Offering O2
@@ -402,7 +425,8 @@ FROM Faculty, Offering O1, Offering O2
    AND O1.OffYear = 2020 AND O2.OffYear = 2020;
 
 -- 4.46  Simple join cycle with a self-join 
-
+-- list names of subordinates and supervisors and 
+-- course number that both teach in 2020
 SELECT F1.FacFirstName AS SubFacFirstName, 
        F1.FacLastName AS SubFacLastName, 
        F2.FacFirstName AS SupFacFirstName, 
