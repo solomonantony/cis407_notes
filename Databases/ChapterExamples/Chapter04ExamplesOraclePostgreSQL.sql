@@ -439,7 +439,8 @@ FROM Faculty F1, Faculty F2, Offering O1, Offering O2
    AND O1.OffYear = 2020 AND O2.OffYear = 2020;
 
 -- 4.47  Join with grouping on multiple columns 
-
+-- List course number, offering number, number of students enrolled for
+-- courses in the spring 2020 term.
 SELECT CourseNo, Enrollment.OfferNo, 
        Count(*) AS NumStudents
  FROM Offering, Enrollment
@@ -448,7 +449,9 @@ SELECT CourseNo, Enrollment.OfferNo,
  GROUP BY Enrollment.OfferNo, CourseNo;
 
 -- 4.48  Joins, grouping, and a grouping condition 
-
+-- list course number, offer number, average student GPA
+-- for course offerings in fall 2019 in which the
+-- average GPA is greater than 3.0
 SELECT CourseNo, Enrollment.OfferNo, Avg(StdGPA) AS AvgGPA
  FROM Student, Offering, Enrollment
  WHERE Offering.OfferNo = Enrollment.OfferNo
@@ -458,7 +461,8 @@ SELECT CourseNo, Enrollment.OfferNo, Avg(StdGPA) AS AvgGPA
  HAVING Avg(StdGPA) > 3.0;
 
 -- 4.49a (PostgreSQL)  Joins and grouping on a computed column 
-
+-- Extract the hiring year, offering year, number of courses 
+-- taught by faculty hired after 2006
 SELECT date_part('year',FacHireDate) AS FacHireYear, OffYear, 
        COUNT(*) as NumCourses
  FROM Offering, Faculty
