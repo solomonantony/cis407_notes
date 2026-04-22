@@ -11,9 +11,7 @@
 ```sql
 SELECT c.CourseNo, c.CrsDesc, c.CrsUnits,
        o.OffTerm, o.OffYear, e.EnrGrade
-FROM   Registration r
-JOIN   Enrollment   e ON r.RegNo    = e.RegNo
-JOIN   Offering     o ON e.OfferNo  = o.OfferNo
+FROM   Enrollment   e join Offering     o ON e.OfferNo  = o.OfferNo
 JOIN   Course       c ON o.CourseNo = c.CourseNo
 WHERE  r.StdNo = %s
 ORDER BY o.OffYear, o.OffTerm, c.CourseNo

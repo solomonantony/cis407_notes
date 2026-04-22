@@ -19,6 +19,7 @@
                 <th>Major</th>
                 <th>Class</th>
                 <th>GPA</th>
+                <th>Courses</th>
             </tr>
         </thead>
         <tbody>
@@ -32,6 +33,7 @@
                 <td>{{ s[5] }}</td>
                 <td>{{ s[6] }}</td>
                 <td>{{ s[7] }}</td>
+                <td><a href="/students/courses/{{ s[0] }}">Courses</a></td>
             </tr>
             {% endfor %}
         </tbody>
