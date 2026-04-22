@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Courses for {{ student[0] }} {{ student[1] }}</title>
+</head>
+<body>
+    <h1>Courses for {{ student[0] }} {{ student[1] }}</h1>
+    <a href="/students">Back to Students</a>
+
+    {% if courses %}
+    <table border="1" cellpadding="6">
+        <thead>
+            <tr>
+                <th>Course No</th>
+                <th>Description</th>
+                <th>Units</th>
+                <th>Term</th>
+                <th>Year</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in courses %}
+            <tr>
+                <td>{{ c[0] }}</td>
+                <td>{{ c[1] }}</td>
+                <td>{{ c[2] }}</td>
+                <td>{{ c[3] }}</td>
+                <td>{{ c[4] }}</td>
+                <td>{{ c[5] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No course enrollments found for this student.</p>
+    {% endif %}
+</body>
+</html>
