@@ -1,0 +1,15 @@
+{
+    "sqltools.connections": [
+        {
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "my_database_connection",
+            "database": "cis609_db",
+            "username": "student",
+            "password": "student"
+        }
+    ]
+}
